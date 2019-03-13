@@ -1,4 +1,4 @@
-package Package
+package source
 
 import (
 	"bytes"

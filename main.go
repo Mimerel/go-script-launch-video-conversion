@@ -1,6 +1,6 @@
 package main
-import "go-script-launch-video-conversion.git/Package"
+import "go-script-launch-video-conversion.git/source"
 
 func main() {
-	Package.Launch()
+	source.Launch()
 }
