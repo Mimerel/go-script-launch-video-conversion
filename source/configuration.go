@@ -14,8 +14,8 @@ file from the path provided otherwize it will use the path coded in hard
  */
 func readConfiguration() {
 	pathToFile := os.Getenv("LOGGER_CONFIGURATION_FILE")
-	if _, err := os.Stat("/home/pi/go/src/go-goole-home-requests/configuration.yaml"); !os.IsNotExist(err) {
-		pathToFile = "/home/pi/go/src/go-goole-home-requests/configuration.yaml"
+	if _, err := os.Stat("/root/go/src/go-script-launch-video-conversion/configuration.yaml"); !os.IsNotExist(err) {
+		pathToFile = "/root/go/src/go-script-launch-video-conversion/configuration.yaml"
 	} else {
 		pathToFile = "./configuration.yaml"
 	}
