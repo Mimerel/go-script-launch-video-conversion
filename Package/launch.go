@@ -30,8 +30,6 @@ func Launch() {
 
 	for {
 		readConfiguration()
-		// to remove for production
-		config.Elasticsearch.Url = ""
 
 		config.Logger = logs.New(config.Elasticsearch.Url, config.Host)
 
