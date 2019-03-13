@@ -1,1 +1,6 @@
-package go_script_launch_video_conversion_git
+package main
+import "go-script-launch-video-conversion.git/Package"
+
+func main() {
+	Package.Launch()
+}
