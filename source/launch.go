@@ -1,8 +1,8 @@
 package source
 
 import (
-	"github.com/Mimerel/go-logger-client"
 	"time"
+	"github.com/Mimerel/go-logger-client"
 )
 
 type Elasticsearch struct {
@@ -29,9 +29,11 @@ var config *Configuration
 func Launch() {
 
 	for {
-		readConfiguration()
+		err:= readConfiguration()
+		if err != nil {
+			config.Logger.Error("%+v",err)
+		}
 
-		config.Logger = logs.New(config.Elasticsearch.Url, config.Host)
 
 		foundFile, err := scanFolder()
 		if err != nil {
