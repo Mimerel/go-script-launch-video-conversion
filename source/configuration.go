@@ -30,7 +30,11 @@ func readConfiguration() (err error){
 		config.Logger = logs.New("", "")
 		return (err)
 	} else {
-		config.Logger = logs.New(config.Elasticsearch.Url, config.Host)
+		if config.Production {
+			config.Logger = logs.New(config.Elasticsearch.Url, config.Host)
+		} else {
+			config.Logger = logs.New("", "")
+		}
 		config.Logger.Info("Configuration Loaded : %+v \n", config)
 	}
 	return nil

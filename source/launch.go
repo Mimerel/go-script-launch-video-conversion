@@ -24,6 +24,7 @@ type Configuration struct {
 	Params               []string      `yaml:"params,omitempty"`
 	Prowl               string      `yaml:"prowl,omitempty"`
 	Logger               logs.LogParams
+	Production bool `yaml:"production,omitempty"`
 }
 
 var config *Configuration
