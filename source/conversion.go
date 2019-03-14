@@ -11,11 +11,18 @@ import (
 
 func startConversion(fileIn string) (err error) {
 	SendProwlNotification("Start", fileIn)
+	config.Logger.Info("Copying file to local /tmp/file.ts" )
+	err = go_utils.CopyFileContents(fileIn, config.TemporaryFile + ".ts")
+	if err != nil {
+		return err
+	}
+	config.Logger.Info("Copying to local finished" )
+
 	fileOut := strings.Replace(fileIn, ".ts", config.DestinationExtension, -1)
 
 	config.Logger.Info("Output filename : %s", fileOut)
 
-	args := []string{"-i",fileIn,"-o",fileOut}
+	args := []string{"-i",config.TemporaryFile + ".ts","-o", config.TemporaryFile + ".mp4"}
 	args = append(args, config.Params...)
 	config.Logger.Info("Running command : HandBrakeCLI %s", args)
 
@@ -42,6 +49,14 @@ func startConversion(fileIn string) (err error) {
 	config.Logger.Info("finished converting : %s", fileIn)
 	config.Logger.Info("removing file : %s", fileIn)
 	os.Remove(fileIn)
+
+	config.Logger.Info("Copying file to Nas " )
+	err = go_utils.CopyFileContents(config.TemporaryFile + ".mp4", fileOut)
+	if err != nil {
+		return err
+	}
+	config.Logger.Info("Copying to Nas finished " )
+
 	SendProwlNotification("End", fileIn)
 	return nil
 }

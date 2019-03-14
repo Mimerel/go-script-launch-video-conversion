@@ -20,6 +20,7 @@ type Configuration struct {
 	Folders              []Folders     `yaml:"folders,omitempty"`
 	OriginExtensions     []string      `yaml:"originExtensions,omitempty"`
 	DestinationExtension string        `yaml:"destinationExtensions,omitempty"`
+	TemporaryFile string        `yaml:"temporaryFile,omitempty"`
 	Params               []string      `yaml:"params,omitempty"`
 	Prowl               string      `yaml:"prowl,omitempty"`
 	Logger               logs.LogParams
