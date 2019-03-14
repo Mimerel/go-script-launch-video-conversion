@@ -47,8 +47,10 @@ func startConversion(fileIn string) (err error) {
 }
 
 func SendProwlNotification(action string, fileIn string) {
-	var params *go_utils.HttpRequestParams
-	params.Url = config.Prowl + "/Plex_Transcode/" + action +"/" + fileIn
+	var params go_utils.HttpRequestParams
+	filename := strings.Replace(fileIn, "/", "-", -1)
+	filename = strings.Replace(filename, " ", ".", -1)
+	params.Url = config.Prowl + "/Plex_Transcode/" + action +"/" + filename
 	params.Method = "POST"
-	_, _ = go_utils.HttpExecuteRequest(params)
+	_, _ = go_utils.HttpExecuteRequest(&params)
 }
