@@ -21,6 +21,7 @@ type Configuration struct {
 	OriginExtensions     []string      `yaml:"originExtensions,omitempty"`
 	DestinationExtension string        `yaml:"destinationExtensions,omitempty"`
 	Params               []string      `yaml:"params,omitempty"`
+	Prowl               string      `yaml:"prowl,omitempty"`
 	Logger               logs.LogParams
 }
 

@@ -3,12 +3,14 @@ package source
 import (
 	"bytes"
 	"fmt"
+	"github.com/Mimerel/go-utils"
 	"os"
 	"os/exec"
 	"strings"
 )
 
 func startConversion(fileIn string) (err error) {
+	SendProwlNotification("Start", fileIn)
 	fileOut := strings.Replace(fileIn, ".ts", config.DestinationExtension, -1)
 
 	config.Logger.Info("Output filename : %s", fileOut)
@@ -40,5 +42,13 @@ func startConversion(fileIn string) (err error) {
 	config.Logger.Info("finished converting : %s", fileIn)
 	config.Logger.Info("removing file : %s", fileIn)
 	os.Remove(fileIn)
+	SendProwlNotification("End", fileIn)
 	return nil
+}
+
+func SendProwlNotification(action string, fileIn string) {
+	var params *go_utils.HttpRequestParams
+	params.Url = config.Prowl + "/Plex_Transcode/" + action +"/" + fileIn
+	params.Method = "POST"
+	_, _ = go_utils.HttpExecuteRequest(params)
 }
