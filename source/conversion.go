@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"github.com/Mimerel/go-utils"
+	"io"
 	"os"
 	"os/exec"
 	"strings"
@@ -42,10 +43,21 @@ func startConversion(fileIn string) (err error) {
 
 		return err
 	}
-	if cmd.Stdout != nil {
-		config.Logger.Info("Output HandBrakeCLI %v", cmd.Stdout)
+	stdout, err := cmd.StdoutPipe()
+	if err != nil {
+		fmt.Printf("Pipeout\n")
+
+		return err
 	}
-	fmt.Printf("out %+v %+v", cmd.Stderr, cmd.Stdout)
+	stderr, err := cmd.StderrPipe()
+	if err != nil {
+		fmt.Printf("PipeErr\n")
+
+		return err
+	}
+	go io.Copy(os.Stdout, stdout)
+	go io.Copy(os.Stderr, stderr)
+	// fmt.Printf("out %+v %+v", cmd.Stderr, cmd.Stdout)
 	config.Logger.Info("finished converting : %s", fileIn)
 	config.Logger.Info("removing file : %s", fileIn)
 	os.Remove(fileIn)
