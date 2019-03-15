@@ -42,7 +42,6 @@ func startConversion(fileIn string) (err error) {
 
 		return err
 	}
-	// fmt.Printf("out %+v %+v", cmd.Stderr, cmd.Stdout)
 	config.Logger.Info("finished converting : %s", fileIn)
 	config.Logger.Info("removing file : %s", fileIn)
 	os.Remove(fileIn)

@@ -1,8 +1,8 @@
 package source
 
 import (
-	"time"
 	"github.com/Mimerel/go-logger-client"
+	"time"
 )
 
 type Elasticsearch struct {
@@ -20,11 +20,12 @@ type Configuration struct {
 	Folders              []Folders     `yaml:"folders,omitempty"`
 	OriginExtensions     []string      `yaml:"originExtensions,omitempty"`
 	DestinationExtension string        `yaml:"destinationExtensions,omitempty"`
-	TemporaryFile string        `yaml:"temporaryFile,omitempty"`
+	TemporaryFile        string        `yaml:"temporaryFile,omitempty"`
 	Params               []string      `yaml:"params,omitempty"`
-	Prowl               string      `yaml:"prowl,omitempty"`
+	Prowl                string        `yaml:"prowl,omitempty"`
+	FromEnd              bool          `yaml:"fromEnd,omitempty"`
+	Production           bool          `yaml:"production,omitempty"`
 	Logger               logs.LogParams
-	Production bool `yaml:"production,omitempty"`
 }
 
 var config *Configuration
@@ -32,16 +33,15 @@ var config *Configuration
 func Launch() {
 
 	for {
-		err:= readConfiguration()
+		err := readConfiguration()
 		if err != nil {
-			config.Logger.Error("%+v",err)
+			config.Logger.Error("%+v", err)
 		}
-
 
 		foundFile, err := scanFolder()
 		if err != nil {
 			config.Logger.Info("No more files to process ")
-			time.Sleep(1 * time.Minute)
+			time.Sleep(60 * time.Minute)
 		} else {
 			config.Logger.Info("Will process file : %s", foundFile)
 
