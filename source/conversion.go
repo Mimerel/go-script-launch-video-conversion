@@ -52,6 +52,7 @@ func startConversion(fileIn string) (err error) {
 		return err
 	}
 	config.Logger.Info("Copying to Nas finished " )
+	os.Remove(config.TemporaryFile + ".mp4")
 
 	SendProwlNotification("End", fileIn)
 	return nil

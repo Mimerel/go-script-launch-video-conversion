@@ -2,7 +2,7 @@ package source
 
 import (
 	"github.com/Mimerel/go-logger-client"
-	"time"
+	"os"
 )
 
 type Elasticsearch struct {
@@ -41,7 +41,7 @@ func Launch() {
 		foundFile, err := scanFolder()
 		if err != nil {
 			config.Logger.Info("No more files to process ")
-			time.Sleep(60 * time.Minute)
+			os.Exit(0)
 		} else {
 			config.Logger.Info("Will process file : %s", foundFile)
 
