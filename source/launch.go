@@ -3,6 +3,7 @@ package source
 import (
 	"github.com/Mimerel/go-logger-client"
 	"os"
+	"time"
 )
 
 type Elasticsearch struct {
@@ -25,6 +26,7 @@ type Configuration struct {
 	Prowl                string        `yaml:"prowl,omitempty"`
 	FromEnd              bool          `yaml:"fromEnd,omitempty"`
 	Production           bool          `yaml:"production,omitempty"`
+	MinimumFileAge       time.Duration          `yaml:"minimumFileAgeInHours,omitempty"`
 	Logger               logs.LogParams
 }
 

@@ -9,20 +9,20 @@ import (
 	"strings"
 )
 
-func startConversion(fileIn string) (err error) {
-	SendProwlNotification("Start", fileIn)
+func startConversion(fileIn go_utils.Files) (err error) {
+	SendProwlNotification("Start", fileIn.FullPath)
 	config.Logger.Info("Copying file to local /tmp/file.ts" )
-	err = go_utils.CopyFileContents(fileIn, config.TemporaryFile + ".ts")
+	err = go_utils.CopyFileContents(fileIn.FullPath, config.TemporaryFile + fileIn.Extension)
 	if err != nil {
 		return err
 	}
 	config.Logger.Info("Copying to local finished" )
 
-	fileOut := strings.Replace(fileIn, ".ts", config.DestinationExtension, -1)
+	fileOut := fileIn.Path + fileIn.Name + config.DestinationExtension
 
 	config.Logger.Info("Output filename : %s", fileOut)
 
-	args := []string{"-i",config.TemporaryFile + ".ts","-o", config.TemporaryFile + ".mp4"}
+	args := []string{"-i",config.TemporaryFile + fileIn.Extension ,"-o", config.TemporaryFile + ".mp4"}
 	args = append(args, config.Params...)
 	config.Logger.Info("Running command : HandBrakeCLI %s", args)
 
@@ -44,7 +44,7 @@ func startConversion(fileIn string) (err error) {
 	}
 	config.Logger.Info("finished converting : %s", fileIn)
 	config.Logger.Info("removing file : %s", fileIn)
-	os.Remove(fileIn)
+	os.Remove(fileIn.FullPath)
 
 	config.Logger.Info("Copying file to Nas " )
 	err = go_utils.CopyFileContents(config.TemporaryFile + ".mp4", fileOut)
@@ -54,7 +54,7 @@ func startConversion(fileIn string) (err error) {
 	config.Logger.Info("Copying to Nas finished " )
 	os.Remove(config.TemporaryFile + ".mp4")
 
-	SendProwlNotification("End", fileIn)
+	SendProwlNotification("End", fileIn.FullPath)
 	return nil
 }
 

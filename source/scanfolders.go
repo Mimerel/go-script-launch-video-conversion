@@ -3,19 +3,25 @@ package source
 import (
 	"fmt"
 	"github.com/Mimerel/go-utils"
+	"time"
 )
 
-func scanFolder() (path string, err error) {
+func scanFolder() (file go_utils.Files, err error) {
 	for index, _ := range config.Folders {
-		_, files, scanErr := go_utils.ScanDirectory(config.Folders[index].Origin, config.OriginExtensions, []string{})
-		if len(scanErr) == 0 && len(files) > 0 {
+		sf := go_utils.NewParams()
+		sf.Request.Path = config.Folders[index].Origin
+		sf.Request.Ignore = []string{".grab"}
+		sf.Request.Extensions = config.OriginExtensions
+		sf.Request.MinAge = config.MinimumFileAge * time.Hour
+		sf.ScanFolder()
+		if len(sf.Result.Errors) == 0 && len(sf.Result.Files) > 0 {
 			if config.FromEnd {
-				return files[len(files)-1], nil
+				return *sf.Result.Files[len(sf.Result.Files)-1], nil
 
 			} else {
-				return files[0], nil
+				return *sf.Result.Files[0], nil
 			}
 		}
 	}
-	return "", fmt.Errorf("No file found. Errors %+v")
+	return file, fmt.Errorf("No file found. Errors %+v")
 }
