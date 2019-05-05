@@ -4,12 +4,13 @@ import (
 	"bytes"
 	"fmt"
 	"github.com/Mimerel/go-utils"
+	"go-script-launch-video-conversion/source/models"
 	"os"
 	"os/exec"
 	"strings"
 )
 
-func startConversion(fileIn go_utils.Files) (err error) {
+func startConversion(fileIn models.Files) (err error) {
 	SendProwlNotification("Start", fileIn.FullPath)
 	config.Logger.Info("Copying file to local /tmp/file.ts" )
 	err = go_utils.CopyFileContents(fileIn.FullPath, config.TemporaryFile + fileIn.Extension)
@@ -23,7 +24,7 @@ func startConversion(fileIn go_utils.Files) (err error) {
 	config.Logger.Info("Output filename : %s", fileOut)
 
 	args := []string{"-i",config.TemporaryFile + fileIn.Extension ,"-o", config.TemporaryFile + ".mp4"}
-	args = append(args, config.Params...)
+	args = append(args, config.ConversionParams[0].Params   ...)
 	config.Logger.Info("Running command : HandBrakeCLI %s", args)
 
 	cmd := exec.Command("HandBrakeCLI", args...)

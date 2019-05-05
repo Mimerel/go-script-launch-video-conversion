@@ -1,0 +1,26 @@
+elasticSearch:
+  url: "http://192.168.222.240:9200"
+host: "go-script-launch-video-conversion"
+prowl: "http://192.168.222.51:9997"
+folders:
+  - origin: "/Volumes/Multimedias/Films-TV/"
+  - origin: "/Volumes/Multimedias/Series-TV/"
+originExtensions:
+  - ".ts"
+ignore:
+  - ".grab"
+convertedFileFolder: "mimerel_convert"
+destinationExtensions: ".mp4"
+minimumFileAgeInHours: 5
+temporaryFile: "/Users/sleguin/Downloads/file"
+conversionParams:
+  - typeName: "Very Fast 720p30"
+    params:
+      - "--preset"
+      - "Very Fast 720p30"
+  - typeName: "Very Fast 480p30"
+    params:
+      - "--preset"
+      - "Very Fast 480p30"
+production: false
+fromEnd: false
